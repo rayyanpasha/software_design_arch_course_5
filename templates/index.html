@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Users</h3>
+      <ul class="list-group">
+        {% for u in users %}
+          <li class="list-group-item">{{ u }}</li>
+        {% else %}
+          <li class="list-group-item">No users yet</li>
+        {% endfor %}
+      </ul>
+      <a class="btn btn-primary mt-3" href="{{ url_for('users_view') }}">Manage Users</a>
+    </div>
+    <div class="col-md-6">
+      <h3>Groups</h3>
+      <ul class="list-group">
+        {% for g in groups %}
+          <li class="list-group-item"><a href="{{ url_for('group_detail', group_name=g) }}">{{ g }}</a></li>
+        {% else %}
+          <li class="list-group-item">No groups yet</li>
+        {% endfor %}
+      </ul>
+      <a class="btn btn-primary mt-3" href="{{ url_for('groups_view') }}">Manage Groups</a>
+    </div>
+  </div>
+{% endblock %}

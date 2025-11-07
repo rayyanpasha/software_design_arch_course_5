@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "name": "Alice",
+      "email": "alice@example.com"
+    },
+    {
+      "name": "Bob",
+      "email": "bob@example.com"
+    },
+    {
+      "name": "Carol",
+      "email": "carol@example.com"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Goa Trip",
+      "members": [
+        "Alice",
+        "Bob",
+        "Carol"
+      ],
+      "expenses": [
+        {
+          "desc": "Dinner",
+          "amount": 2400.0,
+          "payer": "Bob"
+        }
+      ]
+    }
+  ]
+}

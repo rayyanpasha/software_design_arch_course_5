@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Users</h3>
+  <form method="post" class="row g-3">
+    <div class="col-md-4">
+      <input class="form-control" name="name" placeholder="Name">
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" name="email" placeholder="Email">
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-success">Add User</button>
+    </div>
+  </form>
+  <hr>
+  <ul class="list-group">
+    {% for u in users %}
+      <li class="list-group-item">{{ u }}</li>
+    {% else %}
+      <li class="list-group-item">No users</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

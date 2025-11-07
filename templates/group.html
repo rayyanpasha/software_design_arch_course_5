@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Group: {{ group }}</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <h5>Members</h5>
+      <ul class="list-group">
+        {% for m in members %}
+          <li class="list-group-item">{{ m }}</li>
+        {% endfor %}
+      </ul>
+      <h5 class="mt-4">Add Expense</h5>
+      <form method="post">
+        <input type="hidden" name="action" value="add_expense">
+        <div class="mb-2"><input class="form-control" name="description" placeholder="Description"></div>
+        <div class="mb-2"><input class="form-control" name="amount" placeholder="Amount"></div>
+        <div class="mb-2">
+          <select class="form-select" name="payer">
+            {% for m in members %}
+              <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-2"><input class="form-control" name="participants" placeholder="Participants (comma separated)"></div>
+        <div class="mb-2">
+          <select class="form-select" name="split_type">
+            <option value="equal">Equal</option>
+            <option value="unequal">Unequal</option>
+            <option value="percent">Percent</option>
+            <option value="shares">Shares</option>
+          </select>
+        </div>
+        <div class="mb-2"><input class="form-control" name="extra" placeholder="Extra (comma separated for unequal/percent/shares)"></div>
+        <div><button class="btn btn-primary">Add Expense</button></div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h5>Debts</h5>
+      <ul class="list-group">
+        {% for d in debts %}
+          <li class="list-group-item">{{ d }}</li>
+        {% else %}
+          <li class="list-group-item">No debts</li>
+        {% endfor %}
+      </ul>
+      <h5 class="mt-4">Settle Up</h5>
+      <form method="post">
+        <input type="hidden" name="action" value="settle">
+        <div class="mb-2">
+          <select class="form-select" name="from">
+            {% for m in members %}
+              <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-2">
+          <select class="form-select" name="to">
+            {% for m in members %}
+              <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-2"><input class="form-control" name="amount" placeholder="Amount"></div>
+        <div><button class="btn btn-secondary">Settle</button></div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

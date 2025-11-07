@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Groups</h3>
+  <form method="post" class="row g-3">
+    <div class="col-md-4">
+      <input class="form-control" name="name" placeholder="Group name">
+    </div>
+    <div class="col-md-6">
+      <input class="form-control" name="members" placeholder="Members (comma separated)">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-success">Create Group</button>
+    </div>
+  </form>
+  <hr>
+  <ul class="list-group">
+    {% for g in groups %}
+      <li class="list-group-item"><a href="{{ url_for('group_detail', group_name=g) }}">{{ g }}</a></li>
+    {% else %}
+      <li class="list-group-item">No groups</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
