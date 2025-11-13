@@ -68,34 +68,34 @@ class CloudManager:
             print(f"Error: A resource with name '{name}' already exists.")
             return
             
-        config = {}
+        resource_config = {}
         # --- Configuration logic as per requirements ---
         if type_name == "AppService":
-            config["runtime"] = self._select_from_options(
+            resource_config["runtime"] = self._select_from_options(
                 "Select runtime:", config.APPSERVICE_RUNTIMES
             )
-            config["region"] = self._select_from_options(
+            resource_config["region"] = self._select_from_options(
                 "Select region:", config.APPSERVICE_REGIONS
             )
-            config["replica_count"] = int(self._select_from_options(
+            resource_config["replica_count"] = int(self._select_from_options(
                 "Select replica count:", config.APPSERVICE_REPLICA_COUNTS
             ))
         elif type_name == "StorageAccount":
-            config["encryption_enabled"] = self._select_from_options(
+            resource_config["encryption_enabled"] = self._select_from_options(
                 "Enable encryption?", config.STORAGE_ENCRYPTION_OPTIONS
             ) == "True"
-            config["access_key"] = "key-" + os.urandom(8).hex() # Generate dummy key
-            config["max_size_gb"] = int(self._select_from_options(
+            resource_config["access_key"] = "key-" + os.urandom(8).hex() # Generate dummy key
+            resource_config["max_size_gb"] = int(self._select_from_options(
                 "Select max size (GB):", config.STORAGE_MAX_SIZES_GB
             ))
         elif type_name == "CacheDB":
-            config["ttl_seconds"] = int(self._select_from_options(
+            resource_config["ttl_seconds"] = int(self._select_from_options(
                 "Select TTL (seconds):", config.CACHEDB_TTL_SECONDS
             ))
-            config["capacity_mb"] = int(self._select_from_options(
+            resource_config["capacity_mb"] = int(self._select_from_options(
                 "Select capacity (MB):", config.CACHEDB_CAPACITIES_MB
             ))
-            config["eviction_policy"] = self._select_from_options(
+            resource_config["eviction_policy"] = self._select_from_options(
                 "Select eviction policy:", config.CACHEDB_EVICTION_POLICIES
             )
         
@@ -106,7 +106,7 @@ class CloudManager:
             resource = ResourceFactory.create_resource(
                 type_name=type_name,
                 name=name,
-                config=config,
+                config=resource_config,
                 observers=self.global_loggers
             )
             self.resources[name] = resource
