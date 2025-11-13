@@ -2,25 +2,27 @@
 """
 Implements the Factory Pattern for creating resources.
 """
-from typing import Dict, Type, List, Any
+from typing import Dict, Type, List, Any, TYPE_CHECKING
 from patterns.observer import Observer
-# We need to import CloudResource for type hinting, but
-# we must use 'import ...' to avoid circular imports.
-import resources.cloud_resource
+# Avoid importing `resources` at module import time (this creates a
+# circular import: resources -> resource modules -> resource_factory).
+# Use TYPE_CHECKING for type hints only.
+if TYPE_CHECKING:
+    from resources.cloud_resource import CloudResource
 
 class ResourceFactory:
     """The Factory for creating all resource types."""
     
     # The "registry" you required
-    _registry: Dict[str, Type['resources.cloud_resource.CloudResource']] = {}
+    _registry: Dict[str, Type['CloudResource']] = {}
 
     @classmethod
-    def register_resource(cls, type_name: str, resource_class: Type['resources.cloud_resource.CloudResource']):
+    def register_resource(cls, type_name: str, resource_class: Type['CloudResource']):
         """Class method to register a new resource type."""
         cls._registry[type_name] = resource_class
 
     @classmethod
-    def create_resource(cls, type_name: str, name: str, config: Dict[str, Any], observers: List[Observer]) -> 'resources.cloud_resource.CloudResource':
+    def create_resource(cls, type_name: str, name: str, config: Dict[str, Any], observers: List[Observer]) -> 'CloudResource':
         """
         Factory method to create a resource.
         It passes the observers to the constructor.

@@ -42,7 +42,6 @@ class CloudResource(metaclass=abc.ABCMeta):
     def _set_state(self, new_state: ResourceState):
         """Private method to set the state."""
         self._state = new_state
-        print(f"Debug: Resource {self.name} transitioning to {new_state}")
 
     # --- State-delegated Methods ---
     
