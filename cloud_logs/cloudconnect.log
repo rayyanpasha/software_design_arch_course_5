@@ -1,0 +1,3 @@
+[2025-11-13 05:36:10] Resource: tt | Event: Created | Resource 'tt' created. Type: StorageAccount, Encryption: True, MaxSize: 1000GB
+[2025-11-13 05:36:15] Resource: tt | Event: Started | Resource 'tt' started. Type: StorageAccount, Encryption: True, MaxSize: 1000GB
+[2025-11-13 05:36:31] Resource: tt | Event: Stopped | Resource 'tt' stopped successfully.

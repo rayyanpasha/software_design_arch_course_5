@@ -4,7 +4,12 @@ Concrete implementations of the Observer interface for logging.
 """
 import datetime
 import os
+import sys
 from patterns.observer import Observer
+
+# Add parent directory to path to import config
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import config
 
 class ConsoleLogger(Observer):
     """Logs messages to the console."""
@@ -14,9 +19,9 @@ class ConsoleLogger(Observer):
 
 class FileLogger(Observer):
     """Logs messages to a file."""
-    def __init__(self, log_directory="logs", log_file="cloudconnect.log"):
-        self.log_directory = log_directory
-        self.log_file = log_file
+    def __init__(self, log_directory=None, log_file=None):
+        self.log_directory = log_directory or config.LOG_DIRECTORY
+        self.log_file = log_file or config.LOG_FILE
         self.log_path = os.path.join(self.log_directory, self.log_file)
         
         if not os.path.exists(self.log_directory):

@@ -1,2 +1,0 @@
-[2025-11-13 04:01:35] Resource: ray | Event: Created | Resource 'ray' created. Type: AppService, Runtime: python, Region: WestEurope
-[2025-11-13 04:01:42] Resource: ray | Event: Started | Resource 'ray' started. Type: AppService, Runtime: python, Region: WestEurope

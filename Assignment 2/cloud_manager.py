@@ -9,6 +9,7 @@ from resource_factory import ResourceFactory
 from resources.cloud_resource import CloudResource
 from loggers.observers import ConsoleLogger, FileLogger
 from patterns.observer import Observer
+import config
 
 class CloudManager:
     """The main application class that orchestrates the CLI and manages resources."""
@@ -19,7 +20,7 @@ class CloudManager:
         # Create and hold the logger instances. This is a core
         # part of the Dependency Injection.
         self.console_logger = ConsoleLogger()
-        self.file_logger = FileLogger(log_directory="cloud_logs")
+        self.file_logger = FileLogger(log_directory=config.LOG_DIRECTORY, log_file=config.LOG_FILE)
         self.global_loggers: List[Observer] = [self.console_logger, self.file_logger]
 
     def _get_resource(self) -> CloudResource:
@@ -71,31 +72,31 @@ class CloudManager:
         # --- Configuration logic as per requirements ---
         if type_name == "AppService":
             config["runtime"] = self._select_from_options(
-                "Select runtime:", ["python", "nodejs", "dotnet"]
+                "Select runtime:", config.APPSERVICE_RUNTIMES
             )
             config["region"] = self._select_from_options(
-                "Select region:", ["EastUS", "WestEurope", "CentralIndia"]
+                "Select region:", config.APPSERVICE_REGIONS
             )
             config["replica_count"] = int(self._select_from_options(
-                "Select replica count:", ["1", "2", "3"]
+                "Select replica count:", config.APPSERVICE_REPLICA_COUNTS
             ))
         elif type_name == "StorageAccount":
             config["encryption_enabled"] = self._select_from_options(
-                "Enable encryption?", ["True", "False"]
+                "Enable encryption?", config.STORAGE_ENCRYPTION_OPTIONS
             ) == "True"
             config["access_key"] = "key-" + os.urandom(8).hex() # Generate dummy key
             config["max_size_gb"] = int(self._select_from_options(
-                "Select max size (GB):", ["10", "100", "1000"]
+                "Select max size (GB):", config.STORAGE_MAX_SIZES_GB
             ))
         elif type_name == "CacheDB":
             config["ttl_seconds"] = int(self._select_from_options(
-                "Select TTL (seconds):", ["60", "300", "3600"]
+                "Select TTL (seconds):", config.CACHEDB_TTL_SECONDS
             ))
             config["capacity_mb"] = int(self._select_from_options(
-                "Select capacity (MB):", ["100", "500", "1000"]
+                "Select capacity (MB):", config.CACHEDB_CAPACITIES_MB
             ))
             config["eviction_policy"] = self._select_from_options(
-                "Select eviction policy:", ["LRU", "FIFO", "LFU"]
+                "Select eviction policy:", config.CACHEDB_EVICTION_POLICIES
             )
         
         try:
@@ -166,15 +167,10 @@ class CloudManager:
         print("Welcome to CloudConnect, the Cloud Resource Manager")
         while True:
             print("\n--- Main Menu ---")
-            print("1. Create Resource")
-            print("2. Start Resource")
-            print("3. Stop Resource")
-            print("4. Delete Resource")
-            print("5. List All Resources")
-            print("6. View Logs")
-            print("7. Exit")
+            for choice, description in config.MAIN_MENU_OPTIONS.items():
+                print(f"{choice}. {description}")
             
-            choice = input("Enter your choice (1-7): ").strip()
+            choice = input(f"Enter your choice (1-{len(config.MAIN_MENU_OPTIONS)}): ").strip()
             
             if choice == '1':
                 self.handle_create_resource()
@@ -192,4 +188,4 @@ class CloudManager:
                 print("Exiting CloudConnect. Goodbye!")
                 break
             else:
-                print("Invalid choice. Please select from 1-7.")
+                print(f"Invalid choice. Please select from {'-'.join(config.VALID_MENU_CHOICES)}.")
