@@ -6,7 +6,7 @@ from typing import Dict, Type, List, Any
 from patterns.observer import Observer
 # We need to import CloudResource for type hinting, but
 # we must use 'import ...' to avoid circular imports.
-import resources.cloud_resource 
+import resources.cloud_resource
 
 class ResourceFactory:
     """The Factory for creating all resource types."""
@@ -25,11 +25,24 @@ class ResourceFactory:
         Factory method to create a resource.
         It passes the observers to the constructor.
         """
+        # If nothing has been registered yet, import the resources package
+        # lazily so resource modules can self-register without causing
+        # circular imports at module import time.
         resource_class = cls._registry.get(type_name)
+        if resource_class is None:
+            # Importing the package will execute module-level registration
+            # in each resource module (they call ResourceFactory.register_resource).
+            try:
+                import resources  # type: ignore
+            except Exception:
+                # If import failed, leave resource_class as None and raise below
+                pass
+            resource_class = cls._registry.get(type_name)
+
         if not resource_class:
             raise ValueError(f"Unknown resource type: {type_name}")
-        
-        # This calls the CloudResource constructor, which logs the creation
+
+        # Instantiate the resource (constructor will notify observers)
         return resource_class(name=name, config=config, observers=observers)
 
     @classmethod

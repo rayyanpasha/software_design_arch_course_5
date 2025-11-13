@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from resource_factory import ResourceFactory
 from resources.cloud_resource import CloudResource
-from logging.observers import ConsoleLogger, FileLogger
+from loggers.observers import ConsoleLogger, FileLogger
 from patterns.observer import Observer
 
 class CloudManager:
